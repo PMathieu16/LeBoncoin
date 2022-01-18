@@ -1,8 +1,8 @@
 # LeBoncoin
 
-composer update
-symfony serve -d
-docker compose-up -d
+  composer update
+  symfony serve -d
+  docker compose-up -d
 
 ### Pour regarder dans la bdd
 symfony console doctrine:query:sql 'SELECT * FROM user'
