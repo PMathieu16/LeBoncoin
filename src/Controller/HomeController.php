@@ -23,24 +23,4 @@ class HomeController extends AbstractController
         return $this->render('Frontend/home.html.twig', [
             'bonjour' => $bonjour]);
     }
-
-    /**
-     * @Route("/user/new", name="app_new_user")
-     * @return Response
-     */
-    public function  new(EntityManagerInterface $entityManager)
-    {
-        $user = new User();
-        $user->setFirstName('Alexis')
-            ->setLastName('Flacher')
-            ->setSeller(false)
-            ->setIsAdmin(true)
-            ->setUpVote(0)
-            ->setDownVote(0);
-
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        return new Response('Un nouvel user en BDD');
-    }
 }

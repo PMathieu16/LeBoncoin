@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ user.firstName }} {{ user.lastName }}
+{% endblock %}
+
+{% block body %}
+
+    <h3>Bienvenue {{ user.firstName }} {{ user.lastName }} !</h3>
+
+{% endblock %}

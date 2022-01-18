@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,8 +19,8 @@ class SecurityController extends AbstractController
      */
     public function connexion()
     {
-        $bonjour = 'Connexion';
-        return $this->render('Security/connexion.html.twig', ['bonjour' => $bonjour]);
+        $title = 'Connexion';
+        return $this->render('Security/connexion.html.twig', ['title' => $title]);
     }
 
     /**
@@ -27,7 +29,40 @@ class SecurityController extends AbstractController
      */
     public function inscription()
     {
-        $bonjour = 'Inscription';
-        return $this->render('Security/inscription.html.twig', ['bonjour' => $bonjour]);
+        $title = 'Inscription';
+        return $this->render('Security/inscription.html.twig', ['title' => $title]);
+    }
+
+    /**
+     * @Route("/user/new", name="app_new_user")
+     * @return Response
+     */
+    public function new(EntityManagerInterface $entityManager)
+    {
+        $user = new User();
+        $user->setFirstName('Emmanuel')
+            ->setLastName('Macron')
+            ->setSeller(true)
+            ->setIsAdmin(false)
+            ->setUpVote(0)
+            ->setDownVote(0);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return new Response('Un nouvel user en BDD');
+    }
+
+    /**
+     * @Route("/user/{user}", name="app_show_user")
+     * @return Response
+     */
+    public function showOne($user, EntityManagerInterface $entityManager)
+    {
+        $repository = $entityManager->getRepository(User::class);
+        $monUser = $repository->findOneBy(['id' => $user]);
+
+        return $this->render('Frontend/user.html.twig', [
+            'user' => $monUser]);
     }
 }

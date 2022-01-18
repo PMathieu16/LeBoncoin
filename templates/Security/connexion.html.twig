@@ -7,6 +7,14 @@
 {% block body %}
 
     <a href="{{ path("app_homepage") }}">Home</a>
-    <h1>{{ bonjour }}</h1>
+
+    <h1>{{ title }}</h1>
+
+    <form>
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Mot de passe">
+        <input type="submit" value="Se connecter">
+    </form>
+    <a href="{{ path("app_inscription") }}">Pas encore inscrit ?</a>
 
 {% endblock %}
