@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fe38738-62a9-4965-bb63-957599d6649e" name="Changes" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/migrations/Version20220119103550.php" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/migrations/Version20220119103952.php" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/migrations/Version20220119105654.php" afterDir="false" />
@@ -12,6 +13,13 @@
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/packages/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20220118231747.php" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/Version20220119104043.php" afterDir="false" />
+>>>>>>> 71f20648df33eb74b333e2f51888a48f3af7c90e
       <change beforePath="$PROJECT_DIR$/src/Controller/SecurityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SecurityController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -165,9 +173,14 @@
       <workItem from="1642457795113" duration="317000" />
       <workItem from="1642458139826" duration="2264000" />
       <workItem from="1642499605472" duration="10855000" />
+<<<<<<< HEAD
       <workItem from="1642544910413" duration="3046000" />
       <workItem from="1642585461857" duration="4050000" />
       <workItem from="1642589555848" duration="2621000" />
+=======
+      <workItem from="1642544910413" duration="3507000" />
+      <workItem from="1642587432098" duration="4659000" />
+>>>>>>> 71f20648df33eb74b333e2f51888a48f3af7c90e
     </task>
     <servers />
   </component>

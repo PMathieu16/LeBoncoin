@@ -2,7 +2,7 @@
 
 - composer update
 - symfony serve -d
-- docker-compose up -d
+- docker-compose up
 
 ### Pour regarder dans la bdd
 - symfony console doctrine:query:sql 'SELECT * FROM user'
