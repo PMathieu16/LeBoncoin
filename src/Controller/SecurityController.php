@@ -45,7 +45,9 @@ class SecurityController extends AbstractController
             ->setSeller(true)
             ->setIsAdmin(false)
             ->setUpVote(0)
-            ->setDownVote(0);
+            ->setDownVote(0)
+            ->setEmail('emmanuel@gmail.com')
+            ->setPassword('password');
 
         $entityManager->persist($user);
         $entityManager->flush();
