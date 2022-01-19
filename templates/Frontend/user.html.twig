@@ -8,4 +8,11 @@
 
     <h3>Bienvenue {{ user.firstName }} {{ user.lastName }} !</h3>
 
+    <form action="{{ path('app_user_vote', { id: user.id }) }}" method="post">
+        <button class="badge bg-success" name="vote" value="up">Vote up</button>
+        <span>{{ user.upVote }}</span>
+        <button class="badge bg-danger" name="vote" value="down">Vote down</button>
+        <span>{{ user.downVote }}</span>
+    </form>
+
 {% endblock %}

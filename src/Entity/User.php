@@ -134,6 +134,12 @@ class User
         return $this;
     }
 
+    public function getUpVoteString():string
+    {
+        $prefix = $this->getUpVote() >= 0 ? "+" : "-";
+        return sprintf('%s %d', $prefix, abs($this->getUpVote()));
+    }
+
     public function getDownVote(): ?int
     {
         return $this->downVote;
@@ -144,6 +150,12 @@ class User
         $this->downVote = $downVote;
 
         return $this;
+    }
+
+    public function getDownVoteString():string
+    {
+        $prefix = $this->getDownVote() >= 0 ? "+" : "-";
+        return sprintf('%s %d', $prefix, abs($this->getDownVote()));
     }
 
     /**

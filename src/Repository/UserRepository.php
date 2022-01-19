@@ -19,6 +19,20 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * @param $value
+     * @return string
+
+    public function searchByName($value)
+    {
+        return $this->createQueryBuilder('user')
+            ->andWhere('user.firstName LIKE :val')
+            ->setParameter('val', '%' . $value . '%')
+            ->getQuery()
+            ->getResult();
+
+    }*/
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
