@@ -12,18 +12,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-class HomeController extends AbstractController
+class AdController extends AbstractController
 {
     /**
-     * @param AdRepository $adRepository
-     * @Route("/", name="app_homepage")
+     * @Route("/ad/{id}", name="app_show_ad")
      * @return Response
      */
-    public function homepage(AdRepository $adRepository):Response
+    public function homepage($id, EntityManagerInterface $entityManager):Response
     {
-        $ad = $adRepository->findAll();
+        $repository = $entityManager->getRepository(Ad::class);
+        $ad = $repository->findOneBy(['id' => $id]);
 
-        return $this->render('Frontend/home.html.twig', [
+        if(!$ad) {
+            throw $this->createNotFoundException('404 : Annonce inconnu');
+        }
+
+        return $this->render('Frontend/ad.html.twig', [
             'ad' => $ad]);
     }
 }
