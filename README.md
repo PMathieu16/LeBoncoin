@@ -19,3 +19,6 @@
 - symfony console doctrine:query:sql 'SELECT * FROM user'
 - symfony console doctrine:query:sql 'SELECT * FROM ad'
 - symfony console doctrine:query:sql 'SELECT * FROM tag'
+
+### Pour charger les fixtures
+- symfony console doctrine:fixtures:load
