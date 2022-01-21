@@ -6,12 +6,27 @@
 
 {% block body %}
 
-    <a href="{{ path("app_homepage") }}">Home</a>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-lg-6 mb-3">
+                <a href="{{ path("app_homepage") }}">Home</a>
+                <h1>{{ ad.title }}</h1>
+                <p>{{ ad.description }}</p>
+                <p>Prix : {{ ad.price|round(2, 'floor') }} $</p>
+                <a href="#" class="btn btn-primary">Ajouter au panier</a>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Vendu par {{ ad.user.firstName }} {{ ad.user.lastName }}</h5>
+                        <p class="card-text">UpVote : {{ ad.user.upVote }} DownVote : {{ ad.user.downVote }}</p>
+                        <a href="/user/{{ ad.user.id }}" class="btn btn-primary">Voir le profil de {{ ad.user.firstName }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <h1>{{ ad.title }}</h1>
-    <p>{{ ad.description }}</p>
-    <p>Prix : {{ ad.price|round(2, 'floor') }} $</p>
 
-    <a href="/user/{{ ad.user.id }}" class="btn btn-outline-warning">Voir le vendeur</a>
 
 {% endblock %}
