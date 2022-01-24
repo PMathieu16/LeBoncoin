@@ -50,13 +50,14 @@ class Ad
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="ad")
+     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="ad")
      */
     private $question;
 
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->question = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -151,14 +152,32 @@ class Ad
         return $this;
     }
 
-    public function getQuestion(): ?Question
+    /**
+     * @return Collection|Question[]
+     */
+    public function getQuestion(): Collection
     {
         return $this->question;
     }
 
-    public function setQuestion(?Question $question): self
+    public function addQuestion(Question $question): self
     {
-        $this->question = $question;
+        if (!$this->question->contains($question)) {
+            $this->question[] = $question;
+            $question->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->question->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getAd() === $this) {
+                $question->setAd(null);
+            }
+        }
 
         return $this;
     }

@@ -25,18 +25,18 @@ class Question
     private $text;
 
     /**
-     * @ORM\OneToMany(targetEntity=Ad::class, mappedBy="question")
-     */
-    private $ad;
-
-    /**
      * @ORM\OneToOne(targetEntity=Answer::class, mappedBy="question", cascade={"persist", "remove"})
      */
     private $answer;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Ad::class, inversedBy="question")
+     */
+    private $ad;
+
     public function __construct()
     {
-        $this->ad = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -56,36 +56,6 @@ class Question
         return $this;
     }
 
-    /**
-     * @return Collection|Ad[]
-     */
-    public function getAd(): Collection
-    {
-        return $this->ad;
-    }
-
-    public function addAd(Ad $ad): self
-    {
-        if (!$this->ad->contains($ad)) {
-            $this->ad[] = $ad;
-            $ad->setQuestion($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAd(Ad $ad): self
-    {
-        if ($this->ad->removeElement($ad)) {
-            // set the owning side to null (unless already changed)
-            if ($ad->getQuestion() === $this) {
-                $ad->setQuestion(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getAnswer(): ?Answer
     {
         return $this->answer;
@@ -99,6 +69,18 @@ class Question
         }
 
         $this->answer = $answer;
+
+        return $this;
+    }
+
+    public function getAd(): ?Ad
+    {
+        return $this->ad;
+    }
+
+    public function setAd(?Ad $ad): self
+    {
+        $this->ad = $ad;
 
         return $this;
     }

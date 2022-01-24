@@ -13,7 +13,13 @@
                 <h1>{{ ad.title }}</h1>
                 <p>{{ ad.description }}</p>
                 <p>Prix : {{ ad.price|round(2, 'floor') }} $</p>
-                <a href="#" class="btn btn-primary">Ajouter au panier</a>
+                <a href="#" class="btn btn-primary mb-3">Ajouter au panier</a>
+                <p>Questions :</p>
+                <ol>
+                    {% for questions in ad.question %}
+                        <li>{{ questions.text }} ?</li>
+                    {% endfor %}
+                </ol>
             </div>
             <div class="col-lg-6">
                 <div class="card">

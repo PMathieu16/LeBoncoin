@@ -14,16 +14,17 @@
 
         <div class="row">
 
-            {% for ads in ad %}
+            {% for annonce in ad %}
                 <div class="col-lg-6">
                     <div class="card mb-3 mt-3">
                         <img src="..." class="card-img-top" alt="">
                         <div class="card-body">
-                            <h5 class="card-title">{{ ads.title }}</h5>
-                            <p class="card-text">{{ ads.description }}</p>
-                            <p>Prix : {{ ads.price|round(2, 'floor') }} $</p>
-                            <a href="/ad/{{ ads.id }}" class="btn btn-primary">Voir l'annonce</a>
-                            <a href="/user/{{ ads.user.id }}" class="btn btn-outline-warning">Voir le vendeur</a>
+                            <h5 class="card-title">{{ annonce.title }}</h5>
+                            <p class="card-text">{{ annonce.description }}</p>
+                            <p>Prix : {{ annonce.price|round(2, 'floor') }} $</p>
+                            <p>Questions posé : {{ annonce.question|length }}</p>
+                            <a href="/ad/{{ annonce.id }}" class="btn btn-primary">Voir l'annonce</a>
+                            <a href="/user/{{ annonce.user.id }}" class="btn btn-outline-warning">Voir le vendeur</a>
                         </div>
                     </div>
                 </div>
