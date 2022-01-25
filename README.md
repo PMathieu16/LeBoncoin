@@ -21,4 +21,4 @@
 - symfony console doctrine:query:sql 'SELECT * FROM tag'
 
 ### Pour charger les fixtures
-- symfony console doctrine:fixtures:load 
+- symfony console doctrine:fixtures:load
