@@ -18,6 +18,7 @@
                 <ol>
                     {% for questions in ad.question %}
                         <li>{{ questions.text }} ?</li>
+                        <p><i class="fas fa-arrow-right"></i> {{ questions.answer.text }}</p>
                     {% endfor %}
                 </ol>
             </div>
