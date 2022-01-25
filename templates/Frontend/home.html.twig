@@ -20,6 +20,9 @@
                         <img src="..." class="card-img-top" alt="">
                         <div class="card-body">
                             <h5 class="card-title">{{ annonce.title }}</h5>
+                            {% for tag in annonce.tags %}
+                                <p class="badge bg-secondary">{{ tag.title }}</p>
+                            {% endfor %}
                             <p class="card-text">{{ annonce.description }}</p>
                             <p>Prix : {{ annonce.price|round(2, 'floor') }} $</p>
                             <p>Questions posé : {{ annonce.question|length }}</p>

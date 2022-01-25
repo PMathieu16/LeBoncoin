@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Ad;
 use App\Entity\User;
+use App\Form\AdSearchType;
 use App\Repository\AdRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,5 +26,18 @@ class HomeController extends AbstractController
 
         return $this->render('Frontend/home.html.twig', [
             'ad' => $ad]);
+    }
+
+    /**
+     * @Route ("/search", name="app_search")
+     * @return Response
+     */
+    public function search(): Response
+    {
+        $ad = new Ad();
+        $form = $this->createForm(AdSearchType::class, $ad);
+        return $this->render('Frontend/search.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

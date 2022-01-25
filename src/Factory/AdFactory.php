@@ -43,7 +43,8 @@ final class AdFactory extends ModelFactory
             'description' => self::faker()->text(100),
             'price' => self::faker()->randomFloat(100, 10),
             'image' => self::faker()->text(10),
-            'user' => UserFactory::random()
+            'user' => UserFactory::random(),
+            'tags' => TagFactory::randomRange(0, 3)
         ];
     }
 
