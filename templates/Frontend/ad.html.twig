@@ -5,31 +5,49 @@
 {% endblock %}
 
 {% block body %}
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">LeBonCoin</a>
+        </div>
+    </nav>
 
     <div class="container mt-3">
         <div class="row">
             <div class="col-lg-6 mb-3">
-                <a href="{{ path("app_homepage") }}">Home</a>
-                <h1>{{ ad.title }}</h1>
-                <p>{{ ad.description }}</p>
-                <p>Prix : {{ ad.price|round(2, 'floor') }} $</p>
-                <a href="#" class="btn btn-primary mb-3">Ajouter au panier</a>
 
-                <p>Questions :</p>
-                <ol>
-                    {% for questions in ad.question %}
-                        <li>{{ questions.text }} ?</li>
-                        <p><i class="fas fa-arrow-right"></i> {{ questions.answer.text|default('') }}</p>
-                    {% endfor %}
-                </ol>
-                {{ form_start(question_form) }}
-                {{ form_label(question_form, 'Question :') }}
-                {{ form_widget(question_form) }}
-                    <button type="submit" class="btn btn-outline-primary">Envoyer</button>
-                {{ form_end(question_form) }}
+                <div class="card mb-3">
+                    <img src="{{ ad.image }}" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <h1 class="card-title">{{ ad.title }}</h1>
+                        <p class="card-text">{{ ad.description }}</p>
+                        <p>Prix : {{ ad.price|round(2, 'floor') }} $</p>
+                        <a href="#" class="btn btn-primary mb-3">Ajouter au panier</a>
+                    </div>
+                </div>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#suppModal">
+                    Supprimer l'annonce
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="suppModal" tabindex="-1" aria-labelledby="suppModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                Etes vous sur de vouloir supprimer définitivement votre annonce ?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                <a href="/ad/{{ ad.id }}/delete" class="btn btn-danger">Oui supprimer</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <div class="col-lg-6">
+
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Vendu par {{ ad.user.firstName }} {{ ad.user.lastName }}</h5>
@@ -37,7 +55,20 @@
                         <a href="/user/{{ ad.user.id }}" class="btn btn-warning">En savoir plus</a>
                     </div>
                 </div>
-                <a href="/ad/{{ ad.id }}/delete" class="btn btn-danger mt-3">Supprimer</a>
+
+                <p>Questions :</p>
+                <ol>
+                    {% for questions in ad.question %}
+                        <li>{{ questions.text }}</li>
+                        <p><i class="fas fa-arrow-right"></i> {{ questions.answer.text|default('') }}</p>
+                    {% endfor %}
+                </ol>
+                {{ form_start(question_form) }}
+                {{ form_label(question_form, 'Question :') }}
+                {{ form_widget(question_form) }}
+                <button type="submit" class="btn btn-outline-primary">Envoyer</button>
+                {{ form_end(question_form) }}
+
             </div>
         </div>
     </div>
