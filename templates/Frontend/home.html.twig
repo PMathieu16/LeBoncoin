@@ -12,6 +12,11 @@
         <a href="{{ path("app_inscription") }}">Inscription</a>
         <h1>LeBoncoin</h1>
 
+        {% for tags in tag %}
+            <input type="checkbox" class="form-check-input" id="{{ tags.id }}">
+            <label class="form-check-label" for="{{ tags.id }}">{{ tags.title }}</label>
+        {% endfor %}
+
         <div class="row">
 
             {% for annonce in ad %}

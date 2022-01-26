@@ -14,13 +14,20 @@
                 <p>{{ ad.description }}</p>
                 <p>Prix : {{ ad.price|round(2, 'floor') }} $</p>
                 <a href="#" class="btn btn-primary mb-3">Ajouter au panier</a>
+
                 <p>Questions :</p>
                 <ol>
                     {% for questions in ad.question %}
                         <li>{{ questions.text }} ?</li>
-                        <p><i class="fas fa-arrow-right"></i> {{ questions.answer.text }}</p>
+                        <p><i class="fas fa-arrow-right"></i> {{ questions.answer.text|default('') }}</p>
                     {% endfor %}
                 </ol>
+                {{ form_start(question_form) }}
+                {{ form_label(question_form, 'Question :') }}
+                {{ form_widget(question_form) }}
+                    <button type="submit" class="btn btn-outline-primary">Envoyer</button>
+                {{ form_end(question_form) }}
+
             </div>
             <div class="col-lg-6">
                 <div class="card">
@@ -30,6 +37,7 @@
                         <a href="/user/{{ ad.user.id }}" class="btn btn-warning">En savoir plus</a>
                     </div>
                 </div>
+                <a href="/ad/{{ ad.id }}/delete" class="btn btn-danger mt-3">Supprimer</a>
             </div>
         </div>
     </div>

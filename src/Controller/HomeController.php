@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Ad;
 use App\Entity\User;
-use App\Form\AdSearchType;
+use App\Form\AdType;
+use App\Form\TagType;
 use App\Repository\AdRepository;
+use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,24 +22,16 @@ class HomeController extends AbstractController
      * @Route("/", name="app_homepage")
      * @return Response
      */
-    public function homepage(AdRepository $adRepository):Response
+    public function homepage(AdRepository $adRepository, TagRepository $tagRepository):Response
     {
         $ad = $adRepository->findAll();
+        $tag = $tagRepository->findAll();
+
+        $form = $this->createForm(TagType::class);
 
         return $this->render('Frontend/home.html.twig', [
-            'ad' => $ad]);
-    }
-
-    /**
-     * @Route ("/search", name="app_search")
-     * @return Response
-     */
-    public function search(): Response
-    {
-        $ad = new Ad();
-        $form = $this->createForm(AdSearchType::class, $ad);
-        return $this->render('Frontend/search.html.twig', [
-            'form' => $form->createView()
-        ]);
+            'ad' => $ad,
+            'tag' => $tag,
+            'tag_form' => $form->createView()]);
     }
 }
