@@ -50,7 +50,7 @@ class Ad
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="ad")
+     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="ad", cascade={"persist", "remove"})
      */
     private $question;
 

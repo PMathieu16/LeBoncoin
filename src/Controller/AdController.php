@@ -56,6 +56,6 @@ class AdController extends AbstractController
     public function removeAd(Ad $ad, EntityManagerInterface $entityManager): Response {
         $entityManager->remove($ad);
         $entityManager->flush();
-        return $this->redirectToRoute('/');
+        return $this->redirectToRoute('app_homepage');
     }
 }
