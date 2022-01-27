@@ -10,29 +10,45 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Twig\Environment;
 
 class SecurityController extends AbstractController
 {
 
     /**
-     * @Route("/connexion", name="app_connexion")
-     * @return Response
+     * @Route("/login", name="app_login")
      */
-    public function connexion()
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        $title = 'Connexion';
-        return $this->render('Security/connexion.html.twig', ['title' => $title]);
+        // if ($this->getUser()) {
+        //     return $this->redirectToRoute('target_path');
+        // }
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     /**
-     * @Route("/inscription", name="app_inscription")
+     * @Route("/logout", name="app_logout")
+     */
+    public function logout(): void
+    {
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    /**
+     * @Route("/signup", name="app_signup")
      * @return Response
      */
-    public function inscription()
+    public function signup()
     {
         $title = 'Inscription';
-        return $this->render('Security/inscription.html.twig', ['title' => $title]);
+        return $this->render('Security/signup.html.twig', ['title' => $title]);
     }
 
     /**
@@ -44,8 +60,6 @@ class SecurityController extends AbstractController
         $user = new User();
         $user->setFirstName('Emmanuel')
             ->setLastName('Macron')
-            ->setSeller(true)
-            ->setIsAdmin(false)
             ->setUpVote(0)
             ->setDownVote(0)
             ->setEmail('emmanuel@gmail.com')
@@ -93,5 +107,7 @@ class SecurityController extends AbstractController
            'id' => $user->getId()
         ]);
     }
+
+
 
 }

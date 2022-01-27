@@ -45,14 +45,15 @@ class Ad
     private $tags;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ad")
-     */
-    private $user;
-
-    /**
      * @ORM\OneToMany(targetEntity=Question::class, mappedBy="ad", cascade={"persist", "remove"})
      */
     private $question;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ad")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -140,18 +141,6 @@ class Ad
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Question[]
      */
@@ -178,6 +167,18 @@ class Ad
                 $question->setAd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

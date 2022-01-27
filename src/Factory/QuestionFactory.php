@@ -40,7 +40,8 @@ final class QuestionFactory extends ModelFactory
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'text' => self::faker()->text(20),
-            'ad' => AdFactory::random()
+            'ad' => AdFactory::random(),
+            'user' => UserFactory::random()
         ];
     }
 

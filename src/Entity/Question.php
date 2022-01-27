@@ -34,6 +34,12 @@ class Question
      */
     private $ad;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="question")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
 
@@ -81,6 +87,18 @@ class Question
     public function setAd(?Ad $ad): self
     {
         $this->ad = $ad;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
