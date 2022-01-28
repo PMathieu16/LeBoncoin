@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Ad;
 use App\Entity\Question;
 use App\Entity\User;
+use App\Form\AdType;
 use App\Form\QuestionType;
+use App\Form\TagType;
 use App\Repository\AdRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,17 +47,6 @@ class AdController extends AbstractController
         return $this->render('Frontend/ad.html.twig', [
             'ad' => $ad,
             'question_form' => $form->createView()]);
-    }
-
-    /**
-     * @param Ad $ad
-     * @param EntityManagerInterface $entityManager
-     * @Route("/ad/new", name="app_edit_ad")
-     * @return Response
-     */
-    public function editAd()
-    {
-
     }
 
     /**

@@ -14,7 +14,8 @@
             </div>
 
             {{ form_start(formAd) }}
-                <button type="submit" class="btn btn-primary">Envoyer</button>
+            {{ form_widget(formAd) }}
+            <button type="submit" class="btn btn-outline-primary">Envoyer</button>
             {{ form_end(formAd) }}
 
         {% endif %}
