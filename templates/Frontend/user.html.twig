@@ -6,15 +6,17 @@
 
 {% block body %}
 
-    <a href="{{ path("app_homepage") }}">Home</a>
-
     <h3>Bienvenue {{ user.firstName }} {{ user.lastName }} !</h3>
 
     <form action="{{ path('app_user_vote', { id: user.id }) }}" method="post">
+        {% if app.user.id != user.id %}
         <button class="btn btn-success" name="vote" value="up">Vote up</button>
-        <span>{{ user.upVote }}</span>
+        {% endif %}
+        {% if app.user.id != user.id %}
         <button class="btn btn-danger" name="vote" value="down">Vote down</button>
-        <span>{{ user.downVote }}</span>
+        {% endif %}
+        <p class="mt-3">Upvote : {{ user.upVote }}</p>
+        <p>DownVote : {{ user.downVote }}</p>
     </form>
 
 {% endblock %}

@@ -6,24 +6,25 @@
 
 {% block body %}
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">LeBonCoin</a>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
-                    <a class="nav-link" href="{{ path("app_signup") }}">Inscription</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
     <div class="container">
 
-        {% for tags in tag %}
-            <input type="checkbox" class="form-check-input" id="{{ tags.id }}">
-            <label class="form-check-label" for="{{ tags.id }}">{{ tags.title }}</label>
-        {% endfor %}
+        {% if app.user %}
+            <div class="mb-3">
+                Bienvenue {{ app.user.firstname }} {{ app.user.lastname }}
+            </div>
+
+            {{ form_start(formAd) }}
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            {{ form_end(formAd) }}
+
+        {% endif %}
+
+        <div class="mt-5">
+            {% for tags in tag %}
+                <input type="checkbox" class="form-check-input" id="{{ tags.id }}">
+                <label class="form-check-label" for="{{ tags.id }}">{{ tags.title }}</label>
+            {% endfor %}
+        </div>
 
         <div class="row">
 
@@ -36,11 +37,17 @@
                             {% for tag in annonce.tags %}
                                 <p class="badge bg-secondary">{{ tag.title }}</p>
                             {% endfor %}
+
                             <p class="card-text">{{ annonce.description }}</p>
                             <p>Prix : {{ annonce.price|round(2, 'floor') }} $</p>
                             <p>Questions posé : {{ annonce.question|length }}</p>
-                            <a href="/ad/{{ annonce.id }}" class="btn btn-primary">Voir l'annonce</a>
-                            <a href="/user/{{ annonce.user.id }}" class="btn btn-outline-warning">Voir le vendeur</a>
+
+                            {% if app.user %}
+                                <a href="/ad/{{ annonce.id }}" class="btn btn-primary">Voir l'annonce</a>
+                                <a href="/user/{{ annonce.user.id }}" class="btn btn-outline-warning">Voir le vendeur</a>
+                            {% else %}
+                                <p><b><a href="{{ path('app_login') }}">Connectez-vous</a> pour voir l'annonce</b></p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

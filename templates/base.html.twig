@@ -18,6 +18,27 @@
         {% endblock %}
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">LeBonCoin</a>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+                    {% if app.user %}
+                        <div class="navbar-nav">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                        </div>
+                    {% else %}
+                        <div class="navbar-nav">
+                            <a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
+                            <a class="nav-link" href="{{ path("app_signup") }}">Inscription</a>
+                        </div>
+                    {% endif %}
+
+
+
+                </div>
+            </div>
+        </nav>
         {% block body %}{% endblock %}
     </body>
 </html>

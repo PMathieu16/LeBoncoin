@@ -29,9 +29,12 @@ class HomeController extends AbstractController
 
         $form = $this->createForm(TagType::class);
 
+        $formAd = $this->createForm(AdType::class);
+
         return $this->render('Frontend/home.html.twig', [
             'ad' => $ad,
             'tag' => $tag,
-            'tag_form' => $form->createView()]);
+            'tag_form' => $form->createView(),
+            'formAd' => $formAd->createView()]);
     }
 }
