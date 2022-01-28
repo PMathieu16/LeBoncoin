@@ -58,7 +58,7 @@
                 <p>Questions :</p>
                 <ol>
                     {% for questions in ad.question %}
-                        <li>{{ questions.text }}</li>
+                        <li>{{ questions.text }} de <a href="/user/{{ questions.user.id }}">{{ questions.user.username }}</a></li>
                         <p><i class="fas fa-arrow-right"></i> {{ questions.answer.text|default('') }}</p>
                     {% endfor %}
                 </ol>

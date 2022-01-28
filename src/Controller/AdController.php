@@ -31,13 +31,13 @@ class AdController extends AbstractController
 
         $form = $this->createForm(QuestionType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
 
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $question = new Question();
             $question->setText($data->getText())
-                ->setAd($ad);
-
+                ->setAd($ad)
+                ->setUser($this->getUser());
             $entityManager->persist($question);
             $entityManager->flush();
         }
@@ -45,6 +45,17 @@ class AdController extends AbstractController
         return $this->render('Frontend/ad.html.twig', [
             'ad' => $ad,
             'question_form' => $form->createView()]);
+    }
+
+    /**
+     * @param Ad $ad
+     * @param EntityManagerInterface $entityManager
+     * @Route("/ad/new", name="app_edit_ad")
+     * @return Response
+     */
+    public function editAd()
+    {
+
     }
 
     /**
