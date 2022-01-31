@@ -27,6 +27,10 @@
                         Supprimer l'annonce
                     </button>
 
+                    <a href="{{ path('ad.edit', {slug: ad.slug, id: ad.id}) }}"  class="btn btn-outline-warning">
+                        Modifier l'annonce
+                    </a>
+
                     <!-- Modal -->
                     <div class="modal fade" id="suppModal" tabindex="-1" aria-labelledby="suppModalLabel" aria-hidden="true">
                         <div class="modal-dialog">

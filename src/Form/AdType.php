@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Ad;
+use App\Entity\Tag;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,6 +20,11 @@ class AdType extends AbstractType
             ->add('title', TextType::class)
             ->add('description', TextType::class)
             ->add('price', IntegerType::class)
+            ->add('tags', EntityType::class, [
+                'class' => Tag::class,
+                'choice_label' => 'title',
+                'multiple' => true
+            ])
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => false,

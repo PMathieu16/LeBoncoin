@@ -40,7 +40,7 @@ class Ad
     private $price;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Tag::class, mappedBy="ads")
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="ads")
      */
     private $tags;
 
