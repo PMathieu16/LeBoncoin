@@ -78,6 +78,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->ad = new ArrayCollection();
         $this->question = new ArrayCollection();
         $this->answer = new ArrayCollection();
+        $this->upVote = 0;
+        $this->downVote = 0;
     }
 
     public function getId(): ?int
