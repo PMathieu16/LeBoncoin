@@ -30,6 +30,13 @@ class UserController extends AbstractController
             throw $this->createNotFoundException('404 : Utilisateur inconnu');
         }
 
+        if($ad->getSlug() !== $slug) {
+            return $this->redirectToRoute('ad.show', [
+                'id' => $ad->getId(),
+                'slug' => $ad->getSlug(),
+            ], 301);
+        }
+
         return $this->render('Frontend/user.html.twig', [
             'user' => $user
         ]);

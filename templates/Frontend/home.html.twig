@@ -47,7 +47,7 @@
                                 <a href="{{ path('ad.show', {slug: ad.slug, id: ad.id}) }}" class="btn btn-primary">Voir l'annonce</a>
                                 <a href="{{ path('user.show', {slug: ad.user.slug, id: ad.user.id}) }}" class="btn btn-outline-warning">Voir le vendeur</a>
                             {% else %}
-                                <p><b><a href="{{ path('app_login') }}">Connectez-vous</a> pour voir l'annonce</b></p>
+                                <p><b><a href="{{ path('login') }}">Connectez-vous</a> pour voir l'annonce</b></p>
                             {% endif %}
                         </div>
                     </div>

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Ad;
 use App\Entity\Question;
 use App\Form\QuestionType;
-use App\Repository\AdRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
