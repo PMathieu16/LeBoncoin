@@ -22,3 +22,6 @@
 
 ### Pour charger les fixtures
 - symfony console doctrine:fixtures:load
+
+### Problème de chargement des images
+- Désactiver AdBlock car il bloque toute les images avec un mot comme "ad" 

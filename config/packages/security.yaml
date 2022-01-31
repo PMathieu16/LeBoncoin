@@ -22,9 +22,9 @@ security:
             provider: app_user_provider
             custom_authenticator: App\Security\AppAuthenticator
             logout:
-                path: app_logout
+                path: logout
                 # where to redirect after logout
-                target: app_homepage
+                target: home
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

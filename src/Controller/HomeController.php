@@ -9,9 +9,10 @@ use App\Form\TagType;
 use App\Repository\AdRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Env\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
@@ -19,39 +20,55 @@ use Twig\Environment;
 class HomeController extends AbstractController
 {
     /**
-     * @param TagRepository $tagRepository
-     * @param EntityManagerInterface $entityManager
-     * @Route("/", name="app_homepage")
+     * @var AdRepository
+     */
+    private $adRepository;
+    /**
+     * @var TagRepository
+     */
+    private $tagRepository;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    public function __construct(AdRepository $adRepository, TagRepository $tagRepository, EntityManagerInterface $em)
+    {
+        $this->adRepository = $adRepository;
+        $this->tagRepository = $tagRepository;
+        $this->em = $em;
+    }
+
+    /**
+     * @Route("/", name="home")
+     * @param Request $request
      * @return Response
      */
-    public function homepage(TagRepository $tagRepository, EntityManagerInterface $entityManager):Response
+
+    public function homepage(Request $request):Response
     {
-        $adRepository = $entityManager->getRepository(Ad::class);
-
-        $ad = $adRepository->findAll();
-        $tag = $tagRepository->findAll();
-
         $form = $this->createForm(TagType::class);
 
-        $formAd = $this->createForm(AdType::class);
+        $newAd = new Ad();
+        $formAd = $this->createForm(AdType::class,$newAd);
+
+        $formAd->handleRequest($request);
 
         if ($formAd->isSubmitted() && $formAd->isValid()) {
-            $data = $formAd->getData();
-            $annonce = new Ad();
-            $annonce->setTitle($data->getTitle())
-                ->setDescription($data->getDescription())
-                ->setPrice($data->getPrice())
-                ->setImage("https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg")
-                ->setUser($this->getUser());
-
-            $entityManager->persist($annonce);
-            $entityManager->flush();
+            $newAd->setUser($this->getUser());
+            $this->em->persist($newAd);
+            $this->em->flush();
         }
 
+        $ads = $this->adRepository->findAll();
+        $tag = $this->tagRepository->findAll();
+
         return $this->render('Frontend/home.html.twig', [
-            'ad' => $ad,
+            'ads' => $ads,
             'tag' => $tag,
             'tag_form' => $form->createView(),
-            'formAd' => $formAd->createView()]);
+            'formAd' => $formAd->createView()
+        ]);
     }
 }

@@ -11,7 +11,7 @@
             <div class="col-lg-6 mb-3">
 
                 <div class="card mb-3">
-                    <img src="{{ ad.image }}" class="card-img-top" alt="">
+                    <img src="{{ ad.imageName ? vich_uploader_asset(ad, 'imageFile') : "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
                     <div class="card-body">
                         <h1 class="card-title">{{ ad.title }}</h1>
                         <p class="card-text">{{ ad.description }}</p>
@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                                    <a href="/ad/{{ ad.id }}/delete" class="btn btn-danger">Oui supprimer</a>
+                                    <a href="{{ path('ad.delete', {slug: ad.slug, id: ad.id}) }}" class="btn btn-danger">Oui supprimer</a>
                                 </div>
                             </div>
                         </div>
@@ -51,15 +51,15 @@
                     <div class="card-body">
                         <h5 class="card-title">Vendu par {{ ad.user.firstName }} {{ ad.user.lastName }}</h5>
                         <p class="card-text">UpVote : {{ ad.user.upVote }} DownVote : {{ ad.user.downVote }}</p>
-                        <a href="/user/{{ ad.user.id }}" class="btn btn-warning">En savoir plus</a>
+                        <a href="{{ path('user.show', {slug: ad.user.slug, id: ad.user.id}) }}" class="btn btn-warning">En savoir plus</a>
                     </div>
                 </div>
 
                 <p>Questions :</p>
                 <ol>
-                    {% for questions in ad.question %}
-                        <li>{{ questions.text }} de <a href="/user/{{ questions.user.id }}">{{ questions.user.username }}</a></li>
-                        <p><i class="fas fa-arrow-right"></i> {{ questions.answer.text|default('') }}</p>
+                    {% for question in ad.question %}
+                        <li>{{ question.text }} de <a href="{{ path('user.show', {slug: question.user.slug, id: question.user.id}) }}">{{ question.user.username }}</a></li>
+                        <p><i class="fas fa-arrow-right"></i> {{ question.answer.text|default('') }}</p>
                     {% endfor %}
                 </ol>
 

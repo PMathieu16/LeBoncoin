@@ -2,17 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Repository\AdRepository;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Twig\Environment;
 
 class SecurityController extends AbstractController
 {
@@ -22,9 +15,9 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+         if ($this->getUser()) {
+             return $this->redirectToRoute('home');
+         }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -51,64 +44,4 @@ class SecurityController extends AbstractController
         $title = 'Inscription';
         return $this->render('Security/signup.html.twig', ['title' => $title]);
     }
-
-    /**
-     * @Route("/user/new", name="app_new_user")
-     * @return Response
-     */
-    public function new(EntityManagerInterface $entityManager)
-    {
-        $user = new User();
-        $user->setFirstName('Emmanuel')
-            ->setLastName('Macron')
-            ->setUpVote(0)
-            ->setDownVote(0)
-            ->setEmail('emmanuel@gmail.com')
-            ->setPassword('password');
-
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        return new Response('Un nouvel user en BDD');
-    }
-
-    /**
-     * @Route("/user/{id}", name="app_show_user")
-     * @return Response
-     */
-    public function showOne($id, EntityManagerInterface $entityManager)
-    {
-        $repository = $entityManager->getRepository(User::class);
-        $monUser = $repository->findOneBy(['id' => $id]);
-
-        if(!$monUser) {
-            throw $this->createNotFoundException('404 : Utilisateur inconnu');
-        }
-
-        return $this->render('Frontend/user.html.twig', [
-            'user' => $monUser]);
-    }
-
-    /**
-     * @Route ("/user/{id}/vote", name="app_user_vote", methods="post")
-     * @return Response
-     */
-    public function userVote(User $user, Request $request, EntityManagerInterface $entityManager):Response
-    {
-        $vote = $request->request->get('vote');
-        if ($vote === 'up') {
-            $user->setUpVote(($user->getUpVote() + 1));
-        } elseif ($vote === 'down') {
-            $user->setDownVote(($user->getDownVote() + 1));
-        }
-
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_show_user', [
-           'id' => $user->getId()
-        ]);
-    }
-
-
-
 }
