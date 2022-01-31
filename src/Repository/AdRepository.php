@@ -28,6 +28,17 @@ class AdRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByTag($value)
+    {
+        return $this->createQueryBuilder('ad')
+            ->innerJoin('ad.tags', 'tag')
+            ->addSelect('tag')
+            ->andWhere('tag.title LIKE :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Ad[] Returns an array of Ad objects
     //  */

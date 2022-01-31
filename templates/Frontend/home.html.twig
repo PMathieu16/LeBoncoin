@@ -21,26 +21,26 @@
         {% endif %}
 
         <div class="mt-5">
-            {% for tags in tag %}
-                <input type="checkbox" class="form-check-input" id="{{ tags.id }}">
-                <label class="form-check-label" for="{{ tags.id }}">{{ tags.title }}</label>
-            {% endfor %}
+            <form action="{{ path("search_tag") }}">
+                <input type="search" placeholder="Search..." name="s" aria-label="Search" value="{{ app.request.query.get('s') | default('') }}">
+            </form>
         </div>
 
         <div class="row">
 
-            {% for ad in ads %}
+            {% for ad in ads|default() %}
                 <div class="col-lg-6">
                     <div class="card mb-3 mt-3">
                         <img src="{{ ad.imageName ? vich_uploader_asset(ad, 'imageFile') : "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
                         <div class="card-body">
-                            <h5 class="card-title">{{ ad.title }}</h5>
+                            <p>Publié le {{ ad.createdAt|date("d/m/Y") }}</p>
+                            <h3 class="card-title">{{ ad.title }}</h3>
                             {% for tag in ad.tags %}
                                 <p class="badge bg-secondary">{{ tag.title }}</p>
                             {% endfor %}
 
                             <p class="card-text">{{ ad.description }}</p>
-                            <p>Prix : {{ ad.price|round(2, 'floor') }} $</p>
+                            <p>Prix : <b>{{ ad.price|round(2, 'floor') }} $</b></p>
                             <p>Questions posé : {{ ad.question|length }}</p>
 
                             {% if app.user %}

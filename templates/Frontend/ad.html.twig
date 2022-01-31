@@ -13,6 +13,7 @@
                 <div class="card mb-3">
                     <img src="{{ ad.imageName ? vich_uploader_asset(ad, 'imageFile') : "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
                     <div class="card-body">
+                        <p>Publié le {{ ad.createdAt|date("d/m/Y") }}</p>
                         <h1 class="card-title">{{ ad.title }}</h1>
                         <p class="card-text">{{ ad.description }}</p>
                         <p>Prix : {{ ad.price|round(2, 'floor') }} $</p>
