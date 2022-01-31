@@ -19,6 +19,11 @@
         <p>DownVote : {{ user.downVote }}</p>
     </form>
 
+    {% if app.user.id == user.id %}
+        <p>Email : {{ user.email }}</p>
+        <a href="{{ path('user.edit', {slug: user.slug, id: user.id}) }}">Modifier le profil</a>
+    {% endif %}
+
     <h4 class="mb-5 mt-5">Annonce(s) de {{ user.username }} :</h4>
 
     {% for ad in user.ad %}

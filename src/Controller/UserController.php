@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Ad;
 use App\Entity\User;
+use App\Form\AdType;
+use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
@@ -57,6 +61,48 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user.show', [
             'id' => $user->getId(),
             'slug' => $user->getSlug()
+        ]);
+    }
+
+    /**
+     * @Route("/user/{id}/{slug}/edit", name="user.edit", requirements={"slug": "[a-z0-9\-]*"})
+     * @param User $user
+     * @param string $slug
+     * @param Request $request
+     * @return Response
+     */
+    public function userEdit(User $user, string $slug, Request $request, UserPasswordHasherInterface $userPasswordHasher)
+    {
+        if($user->getSlug() !== $slug) {
+            return $this->redirectToRoute('user.edit', [
+                'id' => $user->getId(),
+                'slug' => $user->getSlug(),
+            ], 301);
+        }
+
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+
+            $this->em->persist($user);
+            $this->em->flush();
+
+            return $this->redirectToRoute('user.show', [
+                'id' => $user->getId(),
+                'slug' => $user->getSlug(),
+            ]);
+        }
+
+        return $this->render('Security/userEdit.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 }
