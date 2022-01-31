@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="app_logout")
+     * @Route("/logout", name="logout")
      */
     public function logout(): void
     {
@@ -36,10 +36,10 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/signup", name="app_signup")
+     * @Route("/signup", name="signup")
      * @return Response
      */
-    public function signup()
+    public function signup(): Response
     {
         $title = 'Inscription';
         return $this->render('Security/signup.html.twig', ['title' => $title]);

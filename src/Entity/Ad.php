@@ -78,10 +78,16 @@ class Ad
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->question = new ArrayCollection();
+        $this->createdAt = new DateTime();
     }
 
     public function getId(): ?int
@@ -232,6 +238,18 @@ class Ad
     public function getSlug(): string
     {
         return (new Slugify())->slugify($this->title);
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 
 }

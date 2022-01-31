@@ -62,7 +62,7 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $ads = $this->adRepository->findAll();
+        $ads = $this->adRepository->findAllOrderByNew();
         $tag = $this->tagRepository->findAll();
 
         return $this->render('Frontend/home.html.twig', [

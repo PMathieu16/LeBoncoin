@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\Ad;
 use App\Repository\AdRepository;
+use Faker\Provider\DateTime;
 use Zenstruck\Foundry\RepositoryProxy;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -42,9 +43,9 @@ final class AdFactory extends ModelFactory
             'title' => self::faker()->text(20),
             'description' => self::faker()->text(100),
             'price' => self::faker()->randomFloat(100, 10),
-//            'image' => "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg",
             'user' => UserFactory::random(),
-            'tags' => TagFactory::randomRange(0, 5)
+            'tags' => TagFactory::randomRange(0, 5),
+            'created_at' => self::faker()->dateTimeBetween('-1 month', '-1 week')
         ];
     }
 

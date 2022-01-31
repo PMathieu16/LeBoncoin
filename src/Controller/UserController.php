@@ -24,10 +24,13 @@ class UserController extends AbstractController
      * @return Response
      */
 
-    public function show(User $user): Response
+    public function show(User $user, string $slug): Response
     {
-        if(!$user) {
-            throw $this->createNotFoundException('404 : Utilisateur inconnu');
+        if($user->getSlug() !== $slug) {
+            return $this->redirectToRoute('user.show', [
+                'id' => $user->getId(),
+                'slug' => $user->getSlug(),
+            ], 301);
         }
 
         return $this->render('Frontend/user.html.twig', [

@@ -19,6 +19,15 @@ class AdRepository extends ServiceEntityRepository
         parent::__construct($registry, Ad::class);
     }
 
+    public function findAllOrderByNew()
+    {
+        return $this->createQueryBuilder('ad')
+            ->andWhere('ad.createdAt IS NOT NULL')
+            ->orderBy('ad.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Ad[] Returns an array of Ad objects
     //  */

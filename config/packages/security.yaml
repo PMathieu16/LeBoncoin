@@ -22,7 +22,7 @@ security:
             provider: app_user_provider
             custom_authenticator: App\Security\AppAuthenticator
             logout:
-                path: app_logout
+                path: logout
                 # where to redirect after logout
                 target: home
 
