@@ -37,10 +37,9 @@ final class TagFactory extends ModelFactory
 
     protected function getDefaults(): array
     {
-        $arrayTag = ["Informatique", "Livre", "Parfum"];
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'title' => $arrayTag[array_rand($arrayTag, 1)]
+            'title' => self::faker()->word()
         ];
     }
 

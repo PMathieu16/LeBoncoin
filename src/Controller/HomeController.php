@@ -59,6 +59,7 @@ class HomeController extends AbstractController
             $newAd->setUser($this->getUser());
             $this->em->persist($newAd);
             $this->em->flush();
+            return $this->redirectToRoute('home');
         }
 
         $ads = $this->adRepository->findAll();

@@ -44,7 +44,7 @@ final class AdFactory extends ModelFactory
             'price' => self::faker()->randomFloat(100, 10),
 //            'image' => "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg",
             'user' => UserFactory::random(),
-            'tags' => TagFactory::randomRange(0, 3)
+            'tags' => TagFactory::randomRange(0, 5)
         ];
     }
 
