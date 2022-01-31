@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Ad;
 use App\Entity\Question;
 use App\Form\QuestionType;
+use App\Repository\AdRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,11 +56,26 @@ class AdController extends AbstractController
     }
 
     /**
+     * @Route ("/search", name="search_tag")
+     * @return Response
+     */
+    public function searchAdByTag(AdRepository $adRepository, Request $request)
+    {
+        $search = $request->query->get('s');
+        $ads = $adRepository->findByTag($search);
+
+        if (!$ads) {
+            $ads = $adRepository->findAllOrderByNew();
+        }
+
+        return $this->render('Frontend/home.html.twig', ['ads' => $ads]);
+    }
+
+    /**
      * @Route("/ad/{id}/{slug}/delete", name="ad.delete", requirements={"slug": "[a-z0-9\-]*"})
      * @param Ad $ad
      * @return Response
      */
-
     public function removeAd(Ad $ad): Response {
         if($ad->getUser() === $this->getUser()){
             $this->em->remove($ad);
