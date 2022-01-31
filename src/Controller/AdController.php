@@ -53,7 +53,8 @@ class AdController extends AbstractController
 
         return $this->render('Frontend/ad.html.twig', [
             'ad' => $ad,
-            'question_form' => $form->createView()]);
+            'question_form' => $form->createView()
+        ]);
     }
 
     /**
@@ -85,9 +86,18 @@ class AdController extends AbstractController
     /**
      * @Route("/ad/{id}/{slug}/delete", name="ad.delete", requirements={"slug": "[a-z0-9\-]*"})
      * @param Ad $ad
+     * @param string $slug
      * @return Response
      */
-    public function removeAd(Ad $ad): Response {
+
+    public function removeAd(Ad $ad, string $slug): Response {
+        if($ad->getSlug() !== $slug) {
+            return $this->redirectToRoute('ad.remove', [
+                'id' => $ad->getId(),
+                'slug' => $ad->getSlug(),
+            ], 301);
+        }
+
         if($ad->getUser() === $this->getUser()){
             $this->em->remove($ad);
             $this->em->flush();
@@ -95,5 +105,46 @@ class AdController extends AbstractController
 
         return $this->redirectToRoute('home');
 
+    }
+
+    /**
+     * @Route("/ad/{id}/{slug}/edit", name="ad.edit", requirements={"slug": "[a-z0-9\-]*"})
+     * @param Ad $ad
+     * @param string $slug
+     * @param Request $request
+     * @return Response
+     */
+
+    public function editAd(Ad $ad, string $slug, Request $request){
+        if($ad->getSlug() !== $slug) {
+            return $this->redirectToRoute('ad.show', [
+                'id' => $ad->getId(),
+                'slug' => $ad->getSlug(),
+            ], 301);
+        }
+
+        if($ad->getUser() !== $this->getUser()){
+            $this->redirectToRoute("ad.edit", [
+                'id' => $ad->getId(),
+                'slug' => $ad->getSlug(),
+            ], 301);
+        }
+
+        $form = $this->createForm(AdType::class, $ad);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($ad);
+            $this->em->flush();
+
+            return $this->redirectToRoute('ad.show', [
+                'id' => $ad->getId(),
+                'slug' => $ad->getSlug(),
+            ]);
+        }
+
+        return $this->render('Frontend/adEdit.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }
