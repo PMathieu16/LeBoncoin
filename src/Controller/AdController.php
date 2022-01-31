@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Ad;
 use App\Entity\Question;
+use App\Form\AdType;
 use App\Form\QuestionType;
 use App\Repository\AdRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -64,11 +65,21 @@ class AdController extends AbstractController
         $search = $request->query->get('s');
         $ads = $adRepository->findByTag($search);
 
+        $newAd = new Ad();
+        $formAd = $this->createForm(AdType::class,$newAd);
+        $formAd->handleRequest($request);
+        if ($formAd->isSubmitted() && $formAd->isValid()) {
+            $newAd->setUser($this->getUser());
+            $this->em->persist($newAd);
+            $this->em->flush();
+            return $this->redirectToRoute('home');
+        }
+
         if (!$ads) {
             $ads = $adRepository->findAllOrderByNew();
         }
 
-        return $this->render('Frontend/home.html.twig', ['ads' => $ads]);
+        return $this->render('Frontend/home.html.twig', ['ads' => $ads, "formAd" => $formAd->createView()]);
     }
 
     /**
