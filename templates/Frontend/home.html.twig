@@ -13,23 +13,23 @@
                 Bienvenue {{ app.user.firstname }} {{ app.user.lastname }}
             </h2>
 
-            <div class="accordion" id="accordionExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Ajouter une nouvelle annonce
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            {{ form_start(formAd) }}
-                            {{ form_widget(formAd) }}
-                            <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
-                            {{ form_end(formAd) }}
-                        </div>
-                    </div>
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                Ajouter une nouvelle annonce
+            </button>
+
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                    <h4 class="offcanvas-title" id="offcanvasExampleLabel">Nouvelle annonce</h4>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    {{ form_start(formAd) }}
+                    {{ form_widget(formAd) }}
+                    <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
+                    {{ form_end(formAd) }}
                 </div>
             </div>
+
 
         {% endif %}
 
@@ -83,11 +83,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 
     <style>
-        .accordion-body #ad div {
+        .offcanvas-body #ad div {
             display: flex;
             flex-direction: column;
-            width: 300px;
-
         }
     </style>
 
