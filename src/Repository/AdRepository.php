@@ -33,7 +33,7 @@ class AdRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('ad')
             ->innerJoin('ad.tags', 'tag')
             ->addSelect('tag')
-            ->andWhere('tag.title LIKE :val')
+            ->andWhere('tag.title LIKE :val OR ad.title LIKE :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getResult();

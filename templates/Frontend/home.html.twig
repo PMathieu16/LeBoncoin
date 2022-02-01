@@ -35,14 +35,8 @@
 
         <div class="mt-5">
             <form action="{{ path("search_tag") }}">
-                <input type="search" placeholder="Search..." name="s" aria-label="Search" value="{{ app.request.query.get('s') | default('') }}">
-                <span>
-                    Tags :
-                    {% for tags in tag %}
-                        {{ tags.title }},
-                    {% endfor %}
-                </span>
-
+                <label for="search">Recherche par <b>tag</b> ou par <b>titre</b> :</label>
+                <input id="search" type="search" placeholder="Search..." name="s" aria-label="Search" value="{{ app.request.query.get('s') | default('') }}">
             </form>
         </div>
 
@@ -88,7 +82,6 @@
             flex-direction: column;
         }
     </style>
-
 {% endblock %}
 
 {% block javascripts %}
