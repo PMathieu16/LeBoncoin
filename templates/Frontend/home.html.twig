@@ -9,20 +9,40 @@
     <div class="container">
 
         {% if app.user %}
-            <div class="mb-3">
+            <h2 class="mb-3">
                 Bienvenue {{ app.user.firstname }} {{ app.user.lastname }}
-            </div>
+            </h2>
 
-            {{ form_start(formAd) }}
-            {{ form_widget(formAd) }}
-            <button type="submit" class="btn btn-outline-primary">Envoyer</button>
-            {{ form_end(formAd) }}
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Ajouter une nouvelle annonce
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            {{ form_start(formAd) }}
+                            {{ form_widget(formAd) }}
+                            <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
+                            {{ form_end(formAd) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         {% endif %}
 
         <div class="mt-5">
             <form action="{{ path("search_tag") }}">
                 <input type="search" placeholder="Search..." name="s" aria-label="Search" value="{{ app.request.query.get('s') | default('') }}">
+                <span>
+                    Tags :
+                    {% for tags in tag %}
+                        {{ tags.title }},
+                    {% endfor %}
+                </span>
+
             </form>
         </div>
 
@@ -60,7 +80,17 @@
 {% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+
+    <style>
+        .accordion-body #ad div {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+
+        }
+    </style>
+
 {% endblock %}
 
 {% block javascripts %}

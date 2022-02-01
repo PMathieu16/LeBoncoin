@@ -6,45 +6,50 @@
 
 {% block body %}
 
-    <h3 class="text-center">Profil de {{ user.username }}  !</h3>
+    <div class="text-center">
+        <h3>Profil de {{ user.username }}  !</h3>
 
-    <form class="text-center" action="{{ path('user.vote', {slug: user.slug, id: user.id}) }}" method="post">
-        {% if app.user.id != user.id %}
-        <button class="btn btn-success" name="vote" value="up">Vote up</button>
+        <form action="{{ path('user.vote', {slug: user.slug, id: user.id}) }}" method="post">
+            {% if app.user.id != user.id %}
+                <button class="btn btn-success" name="vote" value="up">Vote up</button>
+            {% endif %}
+            {% if app.user.id != user.id %}
+                <button class="btn btn-danger" name="vote" value="down">Vote down</button>
+            {% endif %}
+            <p class="mt-3">Upvote : {{ user.upVote }}</p>
+            <p>DownVote : {{ user.downVote }}</p>
+        </form>
+
+        {% if app.user.id == user.id %}
+            <a class="btn btn-warning" href="{{ path('user.edit', {slug: user.slug, id: user.id}) }}">Modifier mes informations</a>
         {% endif %}
-        {% if app.user.id != user.id %}
-        <button class="btn btn-danger" name="vote" value="down">Vote down</button>
-        {% endif %}
-        <p class="mt-3">Upvote : {{ user.upVote }}</p>
-        <p>DownVote : {{ user.downVote }}</p>
-    </form>
+    </div>
 
-    {% if app.user.id == user.id %}
-        <p>Email : {{ user.email }}</p>
-        <a href="{{ path('user.edit', {slug: user.slug, id: user.id}) }}">Modifier le profil</a>
-    {% endif %}
+    <div class="container">
+        <h4 class="mb-5 mt-5">Annonce(s) de {{ user.username }} :</h4>
 
-    <h4 class="mb-5 mt-5">Annonce(s) de {{ user.username }} :</h4>
+        {% for ad in user.ad %}
+            <div class="col-lg-6">
+                <div class="card mb-3 mt-3">
+                    <img src="{{ ad.imageName ? vich_uploader_asset(ad, 'imageFile') : "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <p>Publié le {{ ad.createdAt|date("d/m/Y") }}</p>
+                        <h3 class="card-title">{{ ad.title }}</h3>
+                        {% for tag in ad.tags %}
+                            <p class="badge bg-secondary">{{ tag.title }}</p>
+                        {% endfor %}
 
-    {% for ad in user.ad %}
-        <div class="col-lg-6">
-            <div class="card mb-3 mt-3">
-                <img src="{{ ad.imageName ? vich_uploader_asset(ad, 'imageFile') : "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
-                <div class="card-body">
-                    <p>Publié le {{ ad.createdAt|date("d/m/Y") }}</p>
-                    <h3 class="card-title">{{ ad.title }}</h3>
-                    {% for tag in ad.tags %}
-                        <p class="badge bg-secondary">{{ tag.title }}</p>
-                    {% endfor %}
+                        <p class="card-text">{{ ad.description }}</p>
+                        <p>Prix : <b>{{ ad.price|round(2, 'floor') }} $</b></p>
+                        <p>Questions posé : {{ ad.question|length }}</p>
 
-                    <p class="card-text">{{ ad.description }}</p>
-                    <p>Prix : <b>{{ ad.price|round(2, 'floor') }} $</b></p>
-                    <p>Questions posé : {{ ad.question|length }}</p>
-
-                    <a href="{{ path('ad.show', {slug: ad.slug, id: ad.id}) }}" class="btn btn-primary">Voir l'annonce</a>
+                        <a href="{{ path('ad.show', {slug: ad.slug, id: ad.id}) }}" class="btn btn-primary">Voir l'annonce</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+
+
 
 {% endblock %}
