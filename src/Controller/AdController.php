@@ -61,7 +61,7 @@ class AdController extends AbstractController
      * @Route ("/search", name="search_tag")
      * @return Response
      */
-    public function searchAdByTag(AdRepository $adRepository, Request $request)
+    public function searchAdByTag(AdRepository $adRepository, Request $request): Response
     {
         $search = $request->query->get('s');
         $ads = $adRepository->findByTag($search);
@@ -115,16 +115,17 @@ class AdController extends AbstractController
      * @return Response
      */
 
-    public function editAd(Ad $ad, string $slug, Request $request){
+    public function editAd(Ad $ad, string $slug, Request $request): Response
+    {
         if($ad->getSlug() !== $slug) {
-            return $this->redirectToRoute('ad.show', [
+            return $this->redirectToRoute('ad.edit', [
                 'id' => $ad->getId(),
                 'slug' => $ad->getSlug(),
             ], 301);
         }
 
         if($ad->getUser() !== $this->getUser()){
-            $this->redirectToRoute("ad.edit", [
+            return $this->redirectToRoute("ad.show", [
                 'id' => $ad->getId(),
                 'slug' => $ad->getSlug(),
             ], 301);
@@ -147,4 +148,5 @@ class AdController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
 }

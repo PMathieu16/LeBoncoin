@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\AdSearch;
 use App\Entity\User;
+use App\Form\AdSearchType;
 use App\Form\AdType;
 use App\Form\TagType;
 use App\Repository\AdRepository;
@@ -15,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use Twig\Environment;
 
 class HomeController extends AbstractController
@@ -23,20 +26,15 @@ class HomeController extends AbstractController
      * @var AdRepository
      */
     private $adRepository;
-    /**
-     * @var TagRepository
-     */
-    private $tagRepository;
 
     /**
      * @var EntityManagerInterface
      */
     private $em;
 
-    public function __construct(AdRepository $adRepository, TagRepository $tagRepository, EntityManagerInterface $em)
+    public function __construct(AdRepository $adRepository,EntityManagerInterface $em)
     {
         $this->adRepository = $adRepository;
-        $this->tagRepository = $tagRepository;
         $this->em = $em;
     }
 
@@ -48,7 +46,10 @@ class HomeController extends AbstractController
 
     public function homepage(Request $request):Response
     {
-        $form = $this->createForm(TagType::class);
+        $search = new AdSearch();
+        $form = $this->createForm(AdSearchType::class, $search);
+        $form->handleRequest($request);
+        $ads = $this->adRepository->findBySearchBar($search);
 
         $newAd = new Ad();
         $formAd = $this->createForm(AdType::class,$newAd);
@@ -62,13 +63,12 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $ads = $this->adRepository->findAllOrderByNew();
-        $tag = $this->tagRepository->findAll();
+//      $ads = $this->adRepository->findAllOrderByNew();
+
 
         return $this->render('Frontend/home.html.twig', [
             'ads' => $ads,
-            'tag' => $tag,
-            'tag_form' => $form->createView(),
+            'searchForm' => $form->createView(),
             'formAd' => $formAd->createView()
         ]);
     }

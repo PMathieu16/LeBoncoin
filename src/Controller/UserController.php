@@ -65,21 +65,14 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user/{id}/{slug}/edit", name="user.edit", requirements={"slug": "[a-z0-9\-]*"})
-     * @param User $user
-     * @param string $slug
+     * @Route("/user/edit", name="user.edit")
      * @param Request $request
+     * @param UserPasswordHasherInterface $userPasswordHasher
      * @return Response
      */
-    public function userEdit(User $user, string $slug, Request $request, UserPasswordHasherInterface $userPasswordHasher)
+    public function userEdit(Request $request, UserPasswordHasherInterface $userPasswordHasher)
     {
-        if($user->getSlug() !== $slug) {
-            return $this->redirectToRoute('user.edit', [
-                'id' => $user->getId(),
-                'slug' => $user->getSlug(),
-            ], 301);
-        }
-
+        $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 

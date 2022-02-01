@@ -42,7 +42,7 @@ final class AdFactory extends ModelFactory
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'title' => self::faker()->text(20),
             'description' => self::faker()->text(100),
-            'price' => self::faker()->randomFloat(100, 10),
+            'price' => self::faker()->randomFloat(2, 10, 10000),
             'user' => UserFactory::random(),
             'tags' => TagFactory::randomRange(0, 5),
             'created_at' => self::faker()->dateTimeBetween('-1 month', '-1 week')

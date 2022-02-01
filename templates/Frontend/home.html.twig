@@ -24,8 +24,8 @@
                 </div>
                 <div class="offcanvas-body">
                     {{ form_start(formAd) }}
-                    {{ form_widget(formAd) }}
-                    <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
+                        {{ form_widget(formAd) }}
+                        <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
                     {{ form_end(formAd) }}
                 </div>
             </div>
@@ -33,12 +33,25 @@
 
         {% endif %}
 
-        <div class="mt-5">
-            <form action="{{ path("search_tag") }}">
-                <label for="search">Recherche par <b>tag</b> ou par <b>titre</b> :</label>
-                <input id="search" type="search" placeholder="Search..." name="s" aria-label="Search" value="{{ app.request.query.get('s') | default('') }}">
-            </form>
-        </div>
+{#        <div class="mt-5">#}
+{#            <form action="{{ path("search_tag") }}">#}
+{#                <label for="search">Recherche par <b>tag</b> ou par <b>titre</b> :</label>#}
+{#                <input id="search" type="search" placeholder="Search..." name="s" aria-label="Search" value="{{ app.request.query.get('s') | default('') }}">#}
+{#            </form>#}
+{#        </div>#}
+
+            <div class="row mt-3">
+                {{ form_start(searchForm) }}
+                    <div class="row">
+                        <div class="col">{{ form_row(searchForm.q) }}</div>
+                        <div class="col">{{ form_row(searchForm.tags) }}</div>
+                        <div class="col">{{ form_row(searchForm.maxPrice) }}</div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">Envoyer</button>
+                        </div>
+                    </div>
+                {{ form_end(searchForm) }}
+            </div>
 
         <div class="row">
 
@@ -74,19 +87,10 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
-
-    <style>
+        <style>
         .offcanvas-body #ad div {
             display: flex;
             flex-direction: column;
         }
     </style>
 {% endblock %}
-
-{% block javascripts %}
- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script>
-        $("select").select2();
-    </script>
-{%  endblock %}

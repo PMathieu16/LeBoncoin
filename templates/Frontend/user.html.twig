@@ -21,7 +21,7 @@
         </form>
 
         {% if app.user.id == user.id %}
-            <a class="btn btn-warning" href="{{ path('user.edit', {slug: user.slug, id: user.id}) }}">Modifier mes informations</a>
+            <a class="btn btn-warning" href="{{ path('user.edit') }}">Modifier mes informations</a>
         {% endif %}
     </div>
 

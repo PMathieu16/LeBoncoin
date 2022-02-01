@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Ad;
+use App\Entity\AdSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,6 +40,37 @@ class AdRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findBySearchBar(AdSearch $search)
+    {
+        $query = $this->createQueryBuilder('ad')
+                      ->where('ad.createdAt IS NOT NULL')
+                      ->orderBy('ad.createdAt', 'DESC');
+
+        if($search->getQ()){
+            $query = $query
+                ->andWhere("CONCAT(ad.title,' ',ad.description) LIKE :q")
+                ->setParameter('q', "%{$search->getQ()}%");
+        }
+
+        if($search->getTags()->count() > 0){
+            $i = 0;
+            foreach ($search->getTags() as $i => $tag){
+                $i++;
+                $query = $query
+                    ->andWhere(":tag$i MEMBER OF ad.tags")
+                    ->setParameter("tag$i", $tag);
+            }
+        }
+
+        if($search->getMaxPrice()){
+            $query = $query
+                ->andWhere('ad.price <= :maxprice')
+                ->setParameter('maxprice', $search->getMaxPrice());
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Ad[] Returns an array of Ad objects
     //  */
@@ -59,7 +91,7 @@ class AdRepository extends ServiceEntityRepository
     /*
     public function findOneBySomeField($value): ?Ad
     {
-        return $this->createQueryBuilder('a')
+        return $this->createQueryBuilder('ad')
             ->andWhere('a.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
