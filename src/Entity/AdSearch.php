@@ -9,6 +9,11 @@ class AdSearch
 {
 
     /**
+     * @var int
+     */
+    private $page=1;
+
+    /**
      * @var string|null
      */
     private $q="";
@@ -27,6 +32,22 @@ class AdSearch
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+    /**
+     * @param int $page
+     */
+    public function setPage(int $page): void
+    {
+        $this->page = $page;
     }
 
     /**

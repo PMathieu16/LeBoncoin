@@ -23,7 +23,7 @@
 
                     {% if app.user %}
                         <div class="navbar-nav">
-                            <a class="nav-link" href="{{ path('logout') }}">Logout</a>
+                            <a class="nav-link" href="{{ path('logout') }}">Déconnexion</a>
                             <a class="nav-link" href="{{ path('user.show', {slug: app.user.slug, id: app.user.id}) }}">Profil</a>
                         </div>
                     {% else %}

@@ -6,6 +6,7 @@ use App\Entity\Ad;
 use App\Entity\AdSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @method Ad|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,9 +16,16 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AdRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+
+    /**
+     * @var PaginatorInterface
+     */
+    private $paginator;
+
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Ad::class);
+        $this->paginator = $paginator;
     }
 
     public function findAllOrderByNew()
@@ -68,35 +76,14 @@ class AdRepository extends ServiceEntityRepository
                 ->setParameter('maxprice', $search->getMaxPrice());
         }
 
-        return $query->getQuery()->getResult();
+//        return $query->getQuery()->getResult();
+
+        $query = $query->getQuery();
+        return $this->paginator->paginate(
+            $query,
+            $search->getPage(),
+            4
+        );
     }
 
-    // /**
-    //  * @return Ad[] Returns an array of Ad objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Ad
-    {
-        return $this->createQueryBuilder('ad')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

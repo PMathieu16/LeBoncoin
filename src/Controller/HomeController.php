@@ -47,6 +47,7 @@ class HomeController extends AbstractController
     public function homepage(Request $request):Response
     {
         $search = new AdSearch();
+        $search->setPage($request->get('page', 1));
         $form = $this->createForm(AdSearchType::class, $search);
         $form->handleRequest($request);
         $ads = $this->adRepository->findBySearchBar($search);
