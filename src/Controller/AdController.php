@@ -98,13 +98,13 @@ class AdController extends AbstractController
             ], 301);
         }
 
-        if($ad->getUser() === $this->getUser()){
+        if ($ad->getSlug() == $slug) {
             $this->em->remove($ad);
             $this->em->flush();
         }
 
-        return $this->redirectToRoute('home');
 
+        return $this->redirectToRoute('home');
     }
 
     /**

@@ -21,7 +21,7 @@
                     </div>
                 </div>
 
-                {% if app.user.id == ad.user.id %}
+                {% if app.user.id == ad.user.id or is_granted('ROLE_ADMIN') %}
 
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#suppModal">

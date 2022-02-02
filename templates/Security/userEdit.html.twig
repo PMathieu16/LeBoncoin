@@ -9,7 +9,8 @@
     <div class="container">
         {{ form_start(form) }}
         {{ form_widget(form) }}
-        <button type="submit" class="btn btn-outline-primary">Modifier</button>
+        <button type="submit" class="btn btn-primary mt-3">Modifier</button>
+        <a class="btn btn-outline-danger mt-3" href="{{ path("home") }}">Annuler</a>
         {{ form_end(form) }}
     </div>
 
