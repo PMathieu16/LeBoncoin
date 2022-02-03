@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Admin
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h3>Liste des annonces :</h3>
+
+        <div class="row">
+
+            {% for ad in ads|default() %}
+                <div class="col-lg-6">
+                    <div class="card mb-3 mt-3">
+                        <img src="{{ ad.imageName ? vich_uploader_asset(ad, 'imageFile') : "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
+                        <div class="card-body">
+                            <p>Publié le {{ ad.createdAt|date("d/m/Y") }}</p>
+                            <h3 class="card-title">{{ ad.title }}</h3>
+                            {% for tag in ad.tags %}
+                                <p class="badge bg-secondary">{{ tag.title }}</p>
+                            {% endfor %}
+
+                            <p class="card-text">{{ ad.description }}</p>
+                            <p>Prix : <b>{{ ad.price|round(2, 'floor') }} $</b></p>
+                            <p>Questions posé : {{ ad.question|length }}</p>
+                            <a href="{{ path('ad.show', {slug: ad.slug, id: ad.id}) }}" class="btn btn-primary">Voir l'annonce</a>
+                            <a href="{{ path('user.show', {slug: ad.user.slug, id: ad.user.id}) }}" class="btn btn-secondary">Voir le vendeur</a>
+                            <a href="{{ path('ad.edit', {slug: ad.slug, id: ad.id}) }}" class="btn btn-outline-warning">Modifier</a>
+                            <a href="{{ path('ad.delete', {slug: ad.slug, id: ad.id}) }}" class="btn btn-outline-danger">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+        {{ knp_pagination_render(ads, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
+    </div>
+
+
+{% endblock %}

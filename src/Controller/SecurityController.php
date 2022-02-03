@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\Tag;
+use App\Form\TagType;
+use App\Repository\AdRepository;
+use App\Repository\TagRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -14,9 +19,14 @@ class SecurityController extends AbstractController
 {
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
+    private $paginator;
+
+
+    public function __construct(EntityManagerInterface $em, PaginatorInterface $paginator)
     {
         $this->em = $em;
+
+        $this->paginator = $paginator;
     }
 
     /**
@@ -45,36 +55,65 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route ("/admin", name="admin")
+     * @Route ("/admin/users", name="admin.user")
      * @param UserRepository $userRepository
      * @return Response
      */
-    public function admin(UserRepository $userRepository):Response
+    public function adminUser(UserRepository $userRepository, Request $request):Response
     {
-        $users = $userRepository->findAll();
-        return $this->render('Frontend/admin.html.twig', ['users' => $users]);
+        $query = $userRepository->findAll();
+        $users = $this->paginator->paginate(
+            $query,
+            $request->get('page', 1),
+            6
+        );
+
+
+        return $this->render('security/adminUser.html.twig', ['users' => $users]);
     }
 
     /**
-     * @Route ("/user/{id}/{slug}/delete", name="user.delete", requirements={"slug": "[a-z0-9\-]*"})
-     * @param User $user
-     * @param string $slug
+     * @Route ("/admin/ads", name="admin.ads")
+     * @param AdRepository $adRepository
+     * @param Request $request
      * @return Response
      */
-    public function removeUser(User $user, string $slug):Response
+    public function adminAd(AdRepository $adRepository, Request $request):Response
     {
-        if($user->getSlug() !== $slug) {
-            return $this->redirectToRoute('user.remove', [
-                'id' => $user->getId(),
-                'slug' => $user->getSlug(),
-            ], 301);
-        }
+        $query = $adRepository->findAll();
+        $ads = $this->paginator->paginate(
+            $query,
+            $request->get('page', 1),
+            6
+        );
 
-        if ($user->getSlug() == $slug) {
-            $this->em->remove($user);
+        return $this->render('security/adminAd.html.twig', ['ads' => $ads]);
+    }
+
+    /**
+     * @Route ("/admin/tags", name="admin.tags")
+     * @param TagRepository $tagRepository
+     * @param Request $request
+     * @return Response
+     */
+    public function adminTag(TagRepository $tagRepository, Request $request):Response
+    {
+        $tags = $tagRepository->findAll();
+        $tag = new Tag();
+        $form = $this->createForm(TagType::class, $tag);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($tag);
             $this->em->flush();
+
+            return $this->redirectToRoute('admin.tags');
         }
 
-        return $this->redirectToRoute('home');
+        return $this->render('security/adminTag.html.twig', [
+            'tags' => $tags,
+            'form' => $form->createView()
+        ]);
     }
 }

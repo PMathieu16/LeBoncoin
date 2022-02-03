@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class AdController extends AbstractController
 {
@@ -19,9 +20,12 @@ class AdController extends AbstractController
 
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
+    private $security;
+
+    public function __construct(EntityManagerInterface $em, Security $security)
     {
         $this->em = $em;
+        $this->security = $security;
     }
 
     /**
@@ -92,10 +96,17 @@ class AdController extends AbstractController
 
     public function removeAd(Ad $ad, string $slug): Response {
         if($ad->getSlug() !== $slug) {
-            return $this->redirectToRoute('ad.remove', [
+            return $this->redirectToRoute('ad.delete', [
                 'id' => $ad->getId(),
                 'slug' => $ad->getSlug(),
             ], 301);
+        }
+
+        if($ad->getUser() !== $this->getUser() || !$this->security->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute("ad.show", [
+                'id' => $ad->getId(),
+                'slug' => $ad->getSlug(),
+            ]);
         }
 
         if ($ad->getSlug() == $slug) {
@@ -124,11 +135,12 @@ class AdController extends AbstractController
             ], 301);
         }
 
-        if($ad->getUser() !== $this->getUser()){
+
+        if($ad->getUser() !== $this->getUser() || !($this->security->isGranted('ROLE_ADMIN'))){
             return $this->redirectToRoute("ad.show", [
                 'id' => $ad->getId(),
                 'slug' => $ad->getSlug(),
-            ], 301);
+            ]);
         }
 
         $form = $this->createForm(AdType::class, $ad);

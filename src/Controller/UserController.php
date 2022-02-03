@@ -98,4 +98,25 @@ class UserController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route ("/user/{id}/{slug}/delete", name="user.delete", requirements={"slug": "[a-z0-9\-]*"})
+     * @param User $user
+     * @param string $slug
+     * @return Response
+     */
+    public function removeUser(User $user, string $slug):Response
+    {
+        if($user->getSlug() !== $slug) {
+            return $this->redirectToRoute('user.delete', [
+                'id' => $user->getId(),
+                'slug' => $user->getSlug(),
+            ], 301);
+        }
+
+        $this->em->remove($user);
+        $this->em->flush();
+
+        return $this->redirectToRoute('admin.user');
+    }
 }

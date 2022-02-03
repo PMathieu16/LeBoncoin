@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="row">
+            <h3 class="mr-2">Modifier le tag {{ tag.title }}</h3>
+
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-primary mt-3">Valider</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <div class="row">
+            <h3 class="mr-2">Liste des Tags :</h3>
+
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                Ajouter un nouveau tag
+            </button>
+        </div>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+                <h4 class="offcanvas-title" id="offcanvasExampleLabel">Nouvelle annonce</h4>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <div class="row">
+            <ul>
+                {% for tag in tags %}
+                    <li>{{ tag.title }}</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+{#        {{ knp_pagination_render(ads, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}#}
+    </div>
+
+{% endblock %}

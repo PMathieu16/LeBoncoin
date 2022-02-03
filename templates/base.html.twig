@@ -35,7 +35,19 @@
 
                     {% if is_granted('ROLE_ADMIN') %}
                         <div class="navbar-nav">
-                            <a class="nav-link" href="{{ path("admin") }}">Admin</a>
+                            <a class="nav-link" href="">Admin</a>
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{ path("admin.user") }}">Utilisateurs</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ path("admin.ads") }}">Annonces</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ path("admin.tags") }}">Tags</a></li>
+                                </ul>
+                            </div>
                         </div>
                     {% endif %}
 
