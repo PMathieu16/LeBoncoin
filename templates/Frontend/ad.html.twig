@@ -11,7 +11,30 @@
             <div class="col-lg-6 mb-3">
 
                 <div class="card mb-3">
-                    <img src="{{ ad.imageName ? vich_uploader_asset(ad, 'imageFile') : "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
+                    {% if ad.images.count > 0 %}
+                        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                {% for key, image in ad.images %}
+                                    <div class="carousel-item {{ key == 0 ? "active" }}">
+                                        <img src="{{ vich_uploader_asset(image, 'imageFile') }}" class="d-block w-100" alt="{{ image.title }}">
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h5>{{ image.title }}</h5>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    {% else %}
+                        <img src="{{ "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
+                    {% endif %}
                     <div class="card-body">
                         <p>Publié le {{ ad.createdAt|date("d/m/Y") }}</p>
                         <h1 class="card-title">{{ ad.title }}</h1>
@@ -65,6 +88,9 @@
                     {% for question in ad.question %}
                         <li>{{ question.text }} de <a href="{{ path('user.show', {slug: question.user.slug, id: question.user.id}) }}">{{ question.user.username }}</a></li>
                         <p><i class="fas fa-arrow-right"></i> {{ question.answer.text|default('') }}</p>
+                        {% if not question.answer %}
+                            <a href="{{ path('answer.create', {id: question.id}) }}" class="btn btn-secondary">Répondre</a>
+                        {% endif %}
                     {% endfor %}
                 </ol>
 

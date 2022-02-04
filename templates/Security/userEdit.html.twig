@@ -8,10 +8,18 @@
 
     <div class="container">
         {{ form_start(form) }}
-        {{ form_widget(form) }}
+            <div class="row">{{ form_widget(form.email) }}</div>
+            {%  if app.request.get('_route') == 'user.edit' %}
+                <div class="row">{{ form_help(form.password) }}</div>
+               <div class="row">{{ form_widget(form.password) }}</div>
+            {% endif %}
+            <div class="row">{{ form_widget(form.firstName) }}</div>
+            <div class="row">{{ form_widget(form.lastName) }}</div>
+            <div class="row">{{ form_widget(form.roles) }}</div>
+        {{ form_widget(form._token) }}
         <button type="submit" class="btn btn-primary mt-3">Modifier</button>
         <a class="btn btn-outline-danger mt-3" href="{{ path("home") }}">Annuler</a>
-        {{ form_end(form) }}
+        {{ form_end(form, {'render_rest': false}) }}
     </div>
 
 {% endblock %}

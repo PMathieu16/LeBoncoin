@@ -24,9 +24,25 @@
                 </div>
                 <div class="offcanvas-body">
                     {{ form_start(formAd) }}
-                        {{ form_widget(formAd) }}
+                        {{ form_widget(formAd.title) }}
+                        {{ form_widget(formAd.description) }}
+                        {{ form_widget(formAd.price) }}
+                        {{ form_widget(formAd.tags) }}
+                        <ul id="images-list"
+                            data-prototype="{{ form_widget(formAd.images.vars.prototype)|e }}"
+                            data-widget-tags="{{ '<li></li>'|e }}"
+                            data-widget-counter="{{ formAd.images|length }}">
+                            {% for image in formAd.images %}
+                                <li>
+                                    {{ form_help(image) }}
+                                    {{ form_widget(image) }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {{ form_widget(formAd._token) }}
+                        <button type="button" class="add-another-collection-widget" data-list-selector="#images-list">Ajouter une image</button>
                         <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
-                    {{ form_end(formAd) }}
+                    {{ form_end(formAd, {'render_rest': false}) }}
                 </div>
             </div>
         {% endif %}
@@ -49,7 +65,11 @@
             {% for ad in ads|default() %}
                 <div class="col-lg-6">
                     <div class="card mb-3 mt-3">
-                        <img src="{{ ad.imageName ? vich_uploader_asset(ad, 'imageFile') : "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
+                        {% if ad.images.count > 0 %}
+                            <img src="{{ vich_uploader_asset(ad.images[0], 'imageFile') }}" class="d-block w-100" alt="{{ ad.images[0].title }}">
+                        {% else %}
+                            <img src="{{ "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
+                        {% endif %}
                         <div class="card-body">
                             <p>Publié le {{ ad.createdAt|date("d/m/Y") }}</p>
                             <h3 class="card-title">{{ ad.title }}</h3>
@@ -75,6 +95,22 @@
         </div>
         {{ knp_pagination_render(ads, '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig') }}
     </div>
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('.add-another-collection-widget').click(function (e) {
+                var list = jQuery(jQuery(this).attr('data-list-selector'));
+                var counter = list.data('widget-counter') || list.children().length;
+
+                var newWidget = list.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, counter);
+                counter++;
+                list.data('widget-counter', counter);
+
+                var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+                newElem.appendTo(list);
+            });
+        });
+    </script>
 
 {% endblock %}
 
@@ -86,3 +122,5 @@
         }
     </style>
 {% endblock %}
+
+

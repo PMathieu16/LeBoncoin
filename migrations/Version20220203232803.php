@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220131135941 extends AbstractMigration
+final class Version20220203232803 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -33,12 +33,14 @@ final class Version20220131135941 extends AbstractMigration
         $this->addSql('ALTER TABLE answer ADD CONSTRAINT FK_DADD4A25A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE question ADD CONSTRAINT FK_B6F7494E4F34D596 FOREIGN KEY (ad_id) REFERENCES ad (id)');
         $this->addSql('ALTER TABLE question ADD CONSTRAINT FK_B6F7494EA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE image ADD CONSTRAINT FK_C53D045F4F34D596 FOREIGN KEY (ad_id) REFERENCES ad (id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE ad_tag DROP FOREIGN KEY FK_717EDDB44F34D596');
+        $this->addSql('ALTER TABLE image DROP FOREIGN KEY FK_C53D045F4F34D596');
         $this->addSql('ALTER TABLE question DROP FOREIGN KEY FK_B6F7494E4F34D596');
         $this->addSql('ALTER TABLE answer DROP FOREIGN KEY FK_DADD4A251E27F6BF');
         $this->addSql('ALTER TABLE ad_tag DROP FOREIGN KEY FK_717EDDB4BAD26311');
@@ -51,5 +53,6 @@ final class Version20220131135941 extends AbstractMigration
         $this->addSql('DROP TABLE question');
         $this->addSql('DROP TABLE tag');
         $this->addSql('DROP TABLE user');
+        $this->addSql('ALTER TABLE image CHANGE title title VARCHAR(255) DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE image_name image_name VARCHAR(255) DEFAULT NULL COLLATE `utf8mb4_unicode_ci`');
     }
 }

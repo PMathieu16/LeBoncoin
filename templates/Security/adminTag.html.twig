@@ -30,7 +30,7 @@
         <div class="row">
             <ul>
                 {% for tag in tags %}
-                    <li>{{ tag.title }}</li>
+                    <li class="mb-3">{{ tag.title }}<a class="btn btn-danger" href="{{ path('admin.tags.delete', {id: tag.id}) }}"><i class="fa fa-trash"></i></a> </li>
                 {% endfor %}
             </ul>
 

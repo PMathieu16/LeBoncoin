@@ -1,14 +1,69 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Home
+    Modification Annonce
 {% endblock %}
 
 {% block body %}
     {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit" class="btn btn-outline-primary">Envoyer</button>
-    {{ form_end(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.price) }}
+    {{ form_row(form.tags) }}
+    <ul id="images-list"
+        data-prototype="{{ form_widget(form.images.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ form.images|length }}">
+        {% for image in form.images %}
+            <li>
+                {{ form_help(image) }}
+                {{ form_widget(image) }}
+            </li>
+        {% endfor %}
+    </ul>
+    {{ form_widget(form._token) }}
+    <button type="button" class="add-another-collection-widget" data-list-selector="#images-list">Ajouter une image</button>
+    <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
+    {{ form_end(form, {'render_rest': false}) }}
+
+    <script>
+        const addTagFormDeleteLink = (item) => {
+            const removeFormButton = document.createElement('button');
+            removeFormButton.className = "btn btn-danger mb-4"
+            removeFormButton.innerText = "Supprimer l'image";
+
+            item.append(removeFormButton);
+
+            removeFormButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                // remove the li for the tag form
+                item.remove();
+            });
+        }
+
+        jQuery(document).ready(function () {
+            jQuery('.add-another-collection-widget').click(function (e) {
+                var list = jQuery(jQuery(this).attr('data-list-selector'));
+                var counter = list.data('widget-counter') || list.children().length;
+
+                var newWidget = list.attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, counter);
+                counter++;
+                list.data('widget-counter', counter);
+
+                var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+                newElem.appendTo(list);
+                addTagFormDeleteLink(newElem);
+            });
+        });
+
+        document
+            .querySelectorAll('ul#images-list li')
+            .forEach((image) => {
+                addTagFormDeleteLink(image)
+            })
+
+    </script>
 {% endblock %}
 
 

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ user.username }}
+    {{ user.username }} Profil
 {% endblock %}
 
 {% block body %}
@@ -21,7 +21,10 @@
         </form>
 
         {% if app.user.id == user.id %}
-            <a class="btn btn-warning" href="{{ path('user.edit') }}">Modifier mes informations</a>
+            <a class="btn btn-warning" href="{{ path('user.edit') }}">Modifier le profil</a>
+        {% endif %}
+        {% if is_granted("ROLE_ADMIN")%}
+            <a class="btn btn-warning" href="{{ path('admin.user.edit', {id: user.id}) }}">Modifier le profil</a>
         {% endif %}
     </div>
 
@@ -31,7 +34,11 @@
         {% for ad in user.ad %}
             <div class="col-lg-6">
                 <div class="card mb-3 mt-3">
-                    <img src="{{ ad.imageName ? vich_uploader_asset(ad, 'imageFile') : "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
+                    {% if ad.images.count > 0 %}
+                        <img src="{{ vich_uploader_asset(ad.images[0], 'imageFile') }}" class="d-block w-100" alt="{{ ad.images[0].title }}">
+                    {% else %}
+                        <img src="{{ "https://www.yateo.com/blog/wp-content/uploads/2020/03/symfony.jpg" }}" class="card-img-top" alt="">
+                    {% endif %}
                     <div class="card-body">
                         <p>Publié le {{ ad.createdAt|date("d/m/Y") }}</p>
                         <h3 class="card-title">{{ ad.title }}</h3>

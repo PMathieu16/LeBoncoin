@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Ad;
 use App\Entity\User;
-use App\Form\AdType;
 use App\Form\UserType;
+use App\Form\AdminUserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +69,7 @@ class UserController extends AbstractController
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @return Response
      */
-    public function userEdit(Request $request, UserPasswordHasherInterface $userPasswordHasher)
+    public function userEdit(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
@@ -85,6 +84,35 @@ class UserController extends AbstractController
                 )
             );
 
+            $this->em->persist($user);
+            $this->em->flush();
+
+            return $this->redirectToRoute('user.show', [
+                'id' => $user->getId(),
+                'slug' => $user->getSlug(),
+            ]);
+        }
+
+        return $this->render('Security/userEdit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("admin/user/{id}/edit", name="admin.user.edit")
+     * @param User $user
+     * @param Request $request
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @return Response
+     */
+    public function adminUserEdit(User $user,Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        $oldUser = $user;
+        $form = $this->createForm(AdminUserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($oldUser->getPassword());
             $this->em->persist($user);
             $this->em->flush();
 

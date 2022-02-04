@@ -46,5 +46,18 @@ class TagController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route ("/admin/tags/{id}/delete", name="admin.tags.delete")
+     * @param Tag $tag
+     * @return Response
+     */
+    public function removeTag(Tag $tag): Response
+    {
+        $this->em->remove($tag);
+        $this->em->flush();
+
+        return $this->redirectToRoute('admin.tags');
+    }
+
 
 }

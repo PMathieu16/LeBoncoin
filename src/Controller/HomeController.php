@@ -58,14 +58,13 @@ class HomeController extends AbstractController
         $formAd->handleRequest($request);
 
         if ($formAd->isSubmitted() && $formAd->isValid()) {
+
             $newAd->setUser($this->getUser());
             $this->em->persist($newAd);
             $this->em->flush();
+
             return $this->redirectToRoute('home');
         }
-
-//      $ads = $this->adRepository->findAllOrderByNew();
-
 
         return $this->render('Frontend/home.html.twig', [
             'ads' => $ads,

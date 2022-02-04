@@ -23,6 +23,7 @@
                                     <p>{{ role is same as("ROLE_ADMIN") ? "Administrateur" }}</p>
                                 {% endfor %}
                                 <a href="{{ path('user.show', {slug: user.slug, id: user.id}) }}" class="btn btn-primary">Voir son profil</a>
+                                <a class="btn btn-warning" href="{{ path('admin.user.edit', {id: user.id}) }}">Modifier le profil</a>
                                 <a href="{{ path('user.delete', {slug: user.slug, id: user.id}) }}" class="btn btn-outline-danger">Supprimer le profil</a>
                             </div>
                         </div>
